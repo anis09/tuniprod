@@ -31,16 +31,68 @@ public class Magasin {
         this.responsables = new Responsable[MAX_EMPLOYEES];
     }
 
-    boolean addProduct(Produit p) {
+    boolean addProduct (Produit p ) {
         for (int i = 0; i < this.capacity; i++) {
-            if (this.category[i] == null) {
-                this.category[i] = p;
-                return true;
+            if (!p.comparer(category[i])) {
+                if (this.category[i] == null) {
+                    this.category[i] = p;
+                    //nbrproduit++
+                    return true;
+                }
             }
+
         }
         return false;
     }
+    public boolean chercherProduit(Produit p){
+        for (int i=0;i<capacity;i++){
+            if( p.comparer(this.category[i]))
+                return true;
+        }
+        return false;
+    }
+    public boolean delete(Produit p){
+        int pos=-1;
+        for(int i=0;i<capacity;i++){
+            if(chercherProduit(p)){
+                pos=i;
+                break;
+            }
+        }
+        if (pos != -1){
 
+
+            for (int i = pos ;i<capacity;i++){
+
+                if (i == MAX_CAPACITY-1){
+                    this.category[i]=null;
+                    return true;
+                }else {
+                    this.category[i]=category[i+1];
+                }
+            }
+
+        }
+        return false;
+    }
+    public Magasin comparer(Magasin m){
+        int m1 =0;
+        int m2 =0;
+        for(int i=0;i<this.capacity;i++){
+            if (this.category[i]!= null)
+                m1++;
+
+        }
+        for(int i=0;i<m.capacity;i++){
+            if (m.category[i]!= null)
+                m2++;
+
+        }
+        if(m1>m2){
+            return m;
+        }
+        return this;
+    }
     @Override
     public String toString() {
         String str = "";
@@ -76,14 +128,7 @@ public class Magasin {
         return total;
     }
 
-    public boolean chercherProduit(Produit produit) {
-        for (int i = 0; i < nombreDeProduits; i++) {
-            if (category[i].comparer(produit)) {
-                return true;
-            }
-        }
-        return false;
-    }
+
 
     public boolean addCaissier(Caissier caissier) {
         for (int i = 0; i < MAX_EMPLOYEES; i++) {
